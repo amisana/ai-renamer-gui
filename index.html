@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Renamer Command Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>AI Renamer Command Generator</h1>
+
+    <form id="commandForm">
+      <!-- Directory Path -->
+      <div class="form-group">
+        <label for="directory">Directory Path <span class="required">*</span></label>
+        <input type="text" id="directory" name="directory" placeholder="/path/to/directory/" required>
+        <small class="error-message" id="directoryError"></small>
+        <span class="tooltip">The absolute path to your folder. Example: <code>/Users/username/Desktop</code></span>
+      </div>
+
+      <!-- Provider -->
+      <div class="form-group">
+        <label for="provider">Provider <span class="required">*</span></label>
+        <select id="provider" name="provider" required>
+          <option value="" disabled>Select a provider</option>
+          <option value="openai" selected>OpenAI</option>
+          <option value="ollama">Ollama</option>
+          <option value="lm-studio">LM Studio</option>
+          <option value="claude">Claude</option>
+        </select>
+        <small class="error-message" id="providerError"></small>
+        <span class="tooltip">Which LLM provider are you using? Ollama runs locally, OpenAI and Claude require API keys, LM Studio runs locally, etc.</span>
+      </div>
+
+      <!-- API Key (only for OpenAI and Claude) -->
+      <div class="form-group" id="apiKeyGroup" style="display: block;">
+        <label for="apiKey">API Key <span class="required">*</span></label>
+        <input type="password" id="apiKey" name="apiKey" placeholder="Your API Key" required>
+        <small class="error-message" id="apiKeyError"></small>
+        <span class="tooltip">Required if you chose OpenAI or Claude.</span>
+      </div>
+
+      <!-- Base URL -->
+      <div class="form-group">
+        <label for="baseUrl">Base URL (Optional)</label>
+        <input type="text" id="baseUrl" name="baseUrl" placeholder="e.g., http://127.0.0.1:11434">
+        <span class="tooltip">If you have a custom endpoint for Ollama/LM Studio, enter it here.</span>
+      </div>
+
+      <!-- Model -->
+      <div class="form-group">
+        <label for="model">Model <span class="required">*</span></label>
+        <select id="model" name="model" required>
+          <!-- Models will be populated dynamically based on provider -->
+        </select>
+        <small class="error-message" id="modelError"></small>
+        <span class="tooltip">Pick from available models (e.g., gpt-4, llava, gemma, etc.).</span>
+      </div>
+
+      <!-- Frames -->
+      <div class="form-group">
+        <label for="frames">Frames (Video Processing)</label>
+        <input type="number" id="frames" name="frames" placeholder="Number of frames (e.g., 3, 5, 10)" min="1" value="3">
+        <small class="error-message" id="framesError"></small>
+        <span class="tooltip">Max frames to extract from each video. Default = 3.</span>
+      </div>
+
+      <!-- Case Style -->
+      <div class="form-group">
+        <label for="caseStyle">Case Style <span class="required">*</span></label>
+        <select id="caseStyle" name="caseStyle" required>
+          <option value="" disabled>Select case style</option>
+          <option value="camelCase" selected>camelCase</option>
+          <option value="pascalCase">PascalCase</option>
+          <option value="snakeCase">snake_case</option>
+          <option value="kebabCase">kebab-case</option>
+          <option value="capitalCase">Capital Case</option>
+          <option value="constantCase">CONSTANT_CASE</option>
+          <option value="dotCase">dot.case</option>
+        </select>
+        <small class="error-message" id="caseStyleError"></small>
+        <span class="tooltip">How the new filename will be styled. Example: <code>myNewFileName</code> vs. <code>MY_NEW_FILE_NAME</code>.</span>
+      </div>
+
+      <!-- Character Limit -->
+      <div class="form-group">
+        <label for="chars">Character Limit <span class="required">*</span></label>
+        <input type="number" id="chars" name="chars" placeholder="Number of characters in the filename" min="1" value="20" required>
+        <small class="error-message" id="charsError"></small>
+        <span class="tooltip">Files get truncated to this many characters. Default = 20.</span>
+      </div>
+
+      <!-- Language -->
+      <div class="form-group">
+        <label for="language">Language <span class="required">*</span></label>
+        <input type="text" id="language" name="language" placeholder="Language for output (e.g., English)" value="English" required>
+        <small class="error-message" id="languageError"></small>
+        <span class="tooltip">Files can be named in any language. Default = English.</span>
+      </div>
+
+      <!-- Include Subdirectories -->
+      <div class="form-group">
+        <label for="includeSubdirectories">Include Subdirectories <span class="required">*</span></label>
+        <select id="includeSubdirectories" name="includeSubdirectories" required>
+          <option value="" disabled>Select an option</option>
+          <option value="true" selected>Yes</option>
+          <option value="false">No</option>
+        </select>
+        <small class="error-message" id="includeSubdirectoriesError"></small>
+      </div>
+
+      <!-- Custom Prompt -->
+      <div class="form-group">
+        <label for="customPrompt">Custom Prompt <span class="required">*</span></label>
+        <textarea id="customPrompt" name="customPrompt" required>Generate concise and relevant filenames based on the content.</textarea>
+        <small class="error-message" id="customPromptError"></small>
+        <span class="tooltip">Any extra instructions to the AI. e.g., "Focus on one-word titles" or "Describe background only."</span>
+      </div>
+
+      <!-- Button Group -->
+      <div class="button-group">
+        <button type="submit">Generate Command</button>
+        <button type="button" id="testCommandBtn">Test Command</button>
+      </div>
+    </form>
+
+    <!-- Generated Command Section -->
+    <div id="generated-command" style="display: none;">
+      <h2>Generated Command:</h2>
+      <pre id="commandText"></pre>
+      <button onclick="copyCommand()">Copy to Clipboard</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
