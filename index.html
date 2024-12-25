@@ -14,10 +14,8 @@
 
     <form id="commandForm" novalidate>
       <!-- Basic Info Section -->
-      <fieldset>
-        <legend>1. Path &amp; Provider</legend>
-
-        <!-- Directory Path -->
+      <div class="card">
+        <h2>Path &amp; Provider</h2>
         <div class="form-group">
           <label for="directory">
             Directory Path <span class="required">*</span>
@@ -30,13 +28,12 @@
             required
           />
           <small class="error-message" id="directoryError"></small>
-          <span class="tooltip">
+          <p class="help-text">
             The absolute path to your folder. Example:
             <code>/Users/username/Desktop</code>
-          </span>
+          </p>
         </div>
 
-        <!-- Provider -->
         <div class="form-group">
           <label for="provider">Provider <span class="required">*</span></label>
           <select id="provider" name="provider" required>
@@ -47,16 +44,15 @@
             <option value="claude">Claude</option>
           </select>
           <small class="error-message" id="providerError"></small>
-          <span class="tooltip">
+          <p class="help-text">
             Which LLM provider are you using? Ollama runs locally, OpenAI and Claude
             require an API key, LM Studio runs locally, etc.
-          </span>
+          </p>
         </div>
 
         <!-- Provider Info Box -->
         <div id="providerInfo" class="info-box" style="display: none;"></div>
 
-        <!-- API Key (only for OpenAI & Claude) -->
         <div class="form-group" id="apiKeyGroup" style="display: none;">
           <label for="apiKey">API Key <span class="required">*</span></label>
           <input
@@ -68,7 +64,6 @@
           <small class="error-message" id="apiKeyError"></small>
         </div>
 
-        <!-- Base URL (Optional) -->
         <div class="form-group">
           <label for="baseUrl">Base URL (Optional)</label>
           <input
@@ -78,17 +73,16 @@
             placeholder="e.g., http://127.0.0.1:11434"
           />
           <small class="error-message" id="baseUrlError"></small>
-          <span class="tooltip">
+          <p class="help-text">
             If you have a custom endpoint for Ollama/LM Studio, enter it here.
-          </span>
+          </p>
         </div>
-      </fieldset>
+      </div>
 
-      <!-- Additional Options -->
-      <fieldset>
-        <legend>2. Model &amp; Options</legend>
+      <!-- Model & Options -->
+      <div class="card">
+        <h2>Model &amp; Options</h2>
 
-        <!-- Model -->
         <div class="form-group">
           <label for="model">
             Model <span class="required">*</span>
@@ -97,10 +91,11 @@
             <option value="" disabled selected>Select a model</option>
           </select>
           <small class="error-message" id="modelError"></small>
-          <span class="tooltip">Pick from available models (e.g., gpt-4, llava, gemma, etc.).</span>
+          <p class="help-text">
+            Pick from available models (e.g., gpt-4, llava, gemma, etc.).
+          </p>
         </div>
 
-        <!-- Frames (Video) -->
         <div class="form-group">
           <label for="frames">Frames (Video Processing)</label>
           <input
@@ -113,34 +108,46 @@
             placeholder="Number of frames (1–50)"
           />
           <small class="error-message" id="framesError"></small>
-          <span class="tooltip">
+          <p class="help-text">
             Max frames to extract from each video (default = 3).
-          </span>
+          </p>
         </div>
 
-        <!-- Case Style -->
         <div class="form-group">
           <label for="caseStyle">
             Case Style <span class="required">*</span>
           </label>
           <select id="caseStyle" name="caseStyle" required>
             <option value="" disabled>Select case style</option>
-            <option value="camelCase" selected>camelCase</option>
-            <option value="pascalCase">PascalCase</option>
-            <option value="snakeCase">snake_case</option>
-            <option value="kebabCase">kebab-case</option>
-            <option value="capitalCase">Capital Case</option>
-            <option value="constantCase">CONSTANT_CASE</option>
-            <option value="dotCase">dot.case</option>
+            <!-- Add “title” attribute to each option to show tooltip on hover -->
+            <option value="camelCase" title="myFileName (first word lowercase, subsequent words capitalized)">
+              camelCase
+            </option>
+            <option value="pascalCase" title="MyFileName (each word capitalized, no underscores)">
+              PascalCase
+            </option>
+            <option value="snakeCase" title="my_file_name (all lowercase, underscores)">
+              snake_case
+            </option>
+            <option value="kebabCase" title="my-file-name (all lowercase, hyphens)">
+              kebab-case
+            </option>
+            <option value="capitalCase" title="My File Name (each word capitalized and separated by spaces)">
+              Capital Case
+            </option>
+            <option value="constantCase" title="MY_FILE_NAME (all uppercase, underscores)">
+              CONSTANT_CASE
+            </option>
+            <option value="dotCase" title="my.file.name (lowercase, separated by dots)">
+              dot.case
+            </option>
           </select>
           <small class="error-message" id="caseStyleError"></small>
-          <span class="tooltip">
-            How new filenames are styled. e.g. <code>myNewFileName</code> vs.
-            <code>my_new_file_name</code>.
-          </span>
+          <p class="help-text">
+            How new filenames are styled. Hover over each option to see an example.
+          </p>
         </div>
 
-        <!-- Char Limit -->
         <div class="form-group">
           <label for="chars">
             Character Limit <span class="required">*</span>
@@ -156,12 +163,11 @@
             required
           />
           <small class="error-message" id="charsError"></small>
-          <span class="tooltip">
+          <p class="help-text">
             Truncate the generated filename to this many characters.
-          </span>
+          </p>
         </div>
 
-        <!-- Language -->
         <div class="form-group">
           <label for="language">
             Language <span class="required">*</span>
@@ -177,7 +183,6 @@
           <small class="error-message" id="languageError"></small>
         </div>
 
-        <!-- Include Subdirectories -->
         <div class="form-group">
           <label for="includeSubdirectories">
             Include Subdirectories <span class="required">*</span>
@@ -189,13 +194,12 @@
           </select>
           <small class="error-message" id="includeSubdirectoriesError"></small>
         </div>
-      </fieldset>
+      </div>
 
-      <!-- Prompt & Output -->
-      <fieldset>
-        <legend>3. Prompt &amp; Actions</legend>
+      <!-- Custom Prompt & Actions -->
+      <div class="card">
+        <h2>Prompt &amp; Actions</h2>
 
-        <!-- Custom Prompt -->
         <div class="form-group">
           <label for="customPrompt">
             Custom Prompt <span class="required">*</span>
@@ -203,8 +207,8 @@
           <textarea
             id="customPrompt"
             name="customPrompt"
-            required
             rows="3"
+            required
           >Generate concise and relevant filenames based on the content.</textarea>
           <small class="error-message" id="customPromptError"></small>
         </div>
@@ -214,7 +218,7 @@
           <button type="submit">Generate Command</button>
           <button type="button" id="testCommandBtn">Test Command</button>
         </div>
-      </fieldset>
+      </div>
     </form>
 
     <!-- Generated Command Section -->
